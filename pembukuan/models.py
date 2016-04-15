@@ -35,7 +35,7 @@ class IDBarang(models.Model):
     NamaBarang = models.CharField(max_length=255, null=True)
     Suplier = models.ForeignKey(Suplier)
     Harga = models.IntegerField()
-    Diskon = models.IntegerField()
+    Diskon = models.IntegerField()  
     DiskonRp = models.IntegerField()
     HargaDiskon = models.IntegerField()
     Ongkir = models.IntegerField()
@@ -46,5 +46,20 @@ class IDBarang(models.Model):
  
     def __unicode__(self):
         return self.NamaBarang
+
+    @property
+    def rp_diskon(self):
+        RPSD= self.Harga
+        ProsenDiskon= self.Diskon
+        Rabat=RPSD*ProsenDiskon/100
+        return Rabat
+
+    @property
+    def Rp_Stl_Disc(self):
+        RPSD= self.Harga
+        RpDiskon= self.rp_diskon
+        RpStlRabat=RPSD-RpDiskon
+        return RpStlRabat
+
 
 # Create your models here.
