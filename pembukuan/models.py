@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from datetime import date
+
 class Suplier(models.Model):
     namaSuplier = models.CharField(max_length=255, null=True)
     alamat = models.CharField(max_length=255, null=True)
@@ -35,11 +37,8 @@ class IDBarang(models.Model):
     NamaBarang = models.CharField(max_length=255, null=True)
     Suplier = models.ForeignKey(Suplier)
     Harga = models.IntegerField()
-    Diskon = models.IntegerField()  
-    DiskonRp = models.IntegerField()
-    HargaDiskon = models.IntegerField()
+    Diskon = models.IntegerField()
     Ongkir = models.IntegerField()
-    Modal = models.IntegerField()
     HargaJual = models.IntegerField()
     class Meta:
         verbose_name_plural = "IDBarang"
@@ -61,5 +60,24 @@ class IDBarang(models.Model):
         RpStlRabat=RPSD-RpDiskon
         return RpStlRabat
 
+    @property
+    def Modalku(self):
+        RpOngkir= self.Ongkir
+        ModalItem= self.Rp_Stl_Disc
+        RpModalku=RpOngkir+ModalItem
+        return RpModalku
+
+class PembelianBarang(models.Model):
+    NamaBarang = models.ForeignKey(IDBarang)
+    TanggalFaktur=models.DateField(default=date.today())
+    Jumlah=models.IntegerField()
+    Harga = models.IntegerField()
+    Diskon = models.IntegerField()
+    Ongkir = models.IntegerField()
+    class Meta:
+        verbose_name_plural = "NamaBarang"
+ 
+    def __unicode__(self):
+        return self.NamaBarang.NamaBarang
 
 # Create your models here.

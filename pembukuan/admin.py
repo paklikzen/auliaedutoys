@@ -4,6 +4,7 @@ from pembukuan.models import Suplier
 from pembukuan.models import IDBarang
 from pembukuan.models import NoTelepon
 from pembukuan.models import NoRekening
+from pembukuan.models import PembelianBarang
 
 class SuplierAdmin(admin.ModelAdmin):
     list_display=('namaSuplier', 'alamat', 'CP')
@@ -11,7 +12,7 @@ class SuplierAdmin(admin.ModelAdmin):
 #class IDBarangAdmin(admin.ModelAdmin):
    # list_display=('NamaBarang','Suplier','Harga','Diskon','DiskonRp','HargaDiskon','Ongkir','Modal','HargaJual')
 class IDBarangAdmin(admin.ModelAdmin):
-    list_display=('NamaBarang','Suplier','Harga','Diskon', 'DiskonRupiah', 'RpSetelahDisc', 'Ongkir','Modal','HargaJual')
+    list_display=('NamaBarang','Suplier','Harga','Diskon', 'DiskonRupiah', 'RpSetelahDisc', 'Ongkir','RpModalItem','HargaJual')
 
     def DiskonRupiah(self, obj):
         return "Rp "+str(obj.rp_diskon)
@@ -21,9 +22,14 @@ class IDBarangAdmin(admin.ModelAdmin):
         return str(obj.Rp_Stl_Disc)
     RpSetelahDisc.short_description='Harga Setelah Diskon'
 
+    def RpModalItem(self, obj):
+        return str(obj.Modalku)
+    RpModalItem.short_description='Harga Modal Item'
 
+class PembelianBarangAdmin(admin.ModelAdmin):
+    list_display=('TanggalFaktur','Jumlah','Harga','Diskon','Ongkir')
 #
-#
+#    NamaBarang = models.ForeignKey(IDBarang)
 #    def DiskonRp2(self, obj):
 #        RPSD= obj.Harga
 #        ProsenDiskon= obj.Diskon
@@ -44,3 +50,4 @@ admin.site.register(Suplier, SuplierAdmin)
 admin.site.register(IDBarang, IDBarangAdmin)
 admin.site.register(NoTelepon)
 admin.site.register(NoRekening)
+admin.site.register(PembelianBarang, PembelianBarangAdmin)
